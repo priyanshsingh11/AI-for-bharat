@@ -16,6 +16,7 @@ A clean, modular, and production-ready backend built with FastAPI. This backend 
 ├── data/
 │   ├── extracted/         # Directory for structured JSON extracted data
 │   ├── processed/         # Directory for processed AI outputs (e.g. OCR text)
+│   ├── results/           # Directory for final rule engine evaluations & LLM explanations
 │   └── uploads/           # Directory for raw uploaded files
 ├── venv/                  # Isolated Python virtual environment
 ├── .gitignore             # Standard Python gitignore rules
@@ -115,6 +116,23 @@ The server will start at `http://127.0.0.1:8000`.
       "summary": {
           "processed_files": [
               "tender.json",
+              "bidder1.json"
+          ],
+          "errors": []
+      }
+  }
+  ```
+
+### 5. Evaluate API
+- **URL**: `/evaluate`
+- **Method**: `POST`
+- **Description**: Triggers the Explainability Layer and Rule Engine pipeline. It cross-references bidder data against tender criteria extracted in the previous step, generates rule-based deterministic decisions, and creates natural language explanations via the Groq LLM. Outputs are saved as `.json` in `data/results/`.
+- **Success Response**:
+  ```json
+  {
+      "message": "Evaluation pipeline completed.",
+      "summary": {
+          "processed_files": [
               "bidder1.json"
           ],
           "errors": []
