@@ -33,6 +33,12 @@ def run_extraction_pipeline() -> dict:
             with open(file_path, "r", encoding="utf-8") as f:
                 text_content = f.read()
                 
+            # Truncate text to avoid sending excessively large context to the LLM (e.g. max 15000 chars)
+            max_chars = 15000
+            if len(text_content) > max_chars:
+                print(f"Truncating {filename} from {len(text_content)} to {max_chars} characters.")
+                text_content = text_content[:max_chars]
+                
             print(f"Processing file: {filename} for extraction...")
             
             # Detect file type

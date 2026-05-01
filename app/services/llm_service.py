@@ -1,32 +1,31 @@
-import json
+import os
+from groq import Groq
+
+# Initialize the Groq client
+# This expects the GROQ_API_KEY environment variable to be set.
+client = Groq()
 
 def call_llm(prompt: str) -> str:
     """
-    Mock LLM service that returns a predefined JSON string
-    based on keywords found in the prompt.
+    Calls the Groq LLM using the chat completions API.
+    Returns the deterministic, raw text response.
     """
-    prompt_lower = prompt.lower()
-    
-    # Check if the prompt is asking for tender criteria
-    if "criterion" in prompt_lower or "operator" in prompt_lower:
-        tender_mock_response = [
-            {
-                "criterion": "turnover",
-                "operator": ">=",
-                "value": 50000000,
-                "mandatory": True
-            }
-        ]
-        return json.dumps(tender_mock_response)
-        
-    # Check if the prompt is asking for bidder data
-    elif "turnover" in prompt_lower or "gst" in prompt_lower or "projects" in prompt_lower:
-        bidder_mock_response = {
-            "turnover": 30000000,
-            "gst": True,
-            "projects": 2
-        }
-        return json.dumps(bidder_mock_response)
-        
-    # Default fallback
-    return "{}"
+    try:
+        response = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a highly precise data extraction assistant. You only output valid JSON. No markdown formatting like ```json, no explanations, no prefix or suffix."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            model="llama3-70b-8192",
+            temperature=0.0,  # Deterministic response
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        print(f"Error calling Groq API: {e}")
+        return "{}"
