@@ -140,6 +140,28 @@ The server will start at `http://127.0.0.1:8000`.
   }
   ```
 
+### 6. Human Review API
+- **URL**: `/review`
+- **Method**: `POST`
+- **Description**: Submits a human-in-the-loop validation for an evaluated bidder. Allows a reviewer to override or confirm the AI's decision while safely locking in the audit trail without destroying the raw evidence data.
+- **Payload**:
+  ```json
+  {
+      "bidder": "bidder1",
+      "human_status": "Eligible" 
+  }
+  ```
+  *(Valid statuses: "Eligible", "Not Eligible", "Needs Review")*
+- **Success Response**:
+  ```json
+  {
+      "message": "Review submitted successfully.",
+      "bidder": "bidder1.json",
+      "final_status": "Eligible",
+      "timestamp": "2026-05-01T11:42:05.123Z"
+  }
+  ```
+
 ### Interactive API Docs
 FastAPI automatically generates interactive API documentation. You can view it by navigating to:
 - **Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)

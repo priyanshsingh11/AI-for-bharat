@@ -124,7 +124,25 @@ def run_evaluation_pipeline() -> dict:
             eval_results = evaluate_bidder(tender_criteria, bidder_data)
             
             # Explainability Layer with Evidence Extraction
-            final_output = process_evaluations_with_explanations(eval_results, pages=pages_data)
+            evaluations_list = process_evaluations_with_explanations(eval_results, pages=pages_data)
+            
+            # Compute AI Status
+            ai_status = "Eligible"
+            for ev in evaluations_list:
+                if ev.get("result") == "fail":
+                    ai_status = "Not Eligible"
+                    break
+                elif ev.get("result") == "review":
+                    ai_status = "Needs Review"
+            
+            final_output = {
+                "ai_status": ai_status,
+                "human_status": None,
+                "final_status": ai_status,
+                "reviewed": False,
+                "review_timestamp": None,
+                "evaluations": evaluations_list
+            }
             
             # Save final results
             output_path = os.path.join(RESULTS_DIR, bidder_file)
