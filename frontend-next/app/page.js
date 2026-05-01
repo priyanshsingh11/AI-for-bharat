@@ -141,8 +141,8 @@ function Sidebar() {
       <nav className="sidebar-nav">
         <div className="nav-item active">
           <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
           </svg>
           Dashboard
         </div>
@@ -239,7 +239,7 @@ export default function HomePage() {
         body: JSON.stringify({ bidder: filename, human_status: status }),
       });
       if (res.ok) {
-        addStatus(`Marked ${filename.replace('.json','')} as "${status}".`, 'success');
+        addStatus(`Marked ${filename.replace('.json', '')} as "${status}".`, 'success');
         await loadResults();
       } else {
         addStatus(`Review failed: ${await res.text()}`, 'error');
@@ -328,7 +328,6 @@ export default function HomePage() {
               {running ? <span className="spinner" /> : '⚡'}
               {running ? 'Running Evaluation…' : 'Run Evaluation'}
             </button>
-            <div className="run-hint">Estimated completion: ~45 seconds depending on document size</div>
           </div>
 
           {/* Status Messages */}
