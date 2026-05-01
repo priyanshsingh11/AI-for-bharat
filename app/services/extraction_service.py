@@ -1,23 +1,11 @@
 import json
 import re
 from typing import Dict, Any, List, Union
-from app.services.llm_service import call_llm
+from app.services.llm_service import call_llm, safe_parse
 
 def safe_json_loads(text: str) -> Any:
-    """Helper to safely parse JSON, stripping markdown artifacts and control characters."""
-    text = text.strip()
-    # Strip markdown code block wrappers if the LLM leaked them
-    if text.startswith("```json"):
-        text = text[7:]
-    if text.startswith("```"):
-        text = text[3:]
-    if text.endswith("```"):
-        text = text[:-3]
-    text = text.strip()
-    # Strip illegal control characters (0x00–0x08, 0x0B, 0x0C, 0x0E–0x1F, 0x7F)
-    # Preserve normal whitespace: 0x09=tab, 0x0A=newline, 0x0D=carriage return
-    text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', text)
-    return json.loads(text)
+    """Wrapper around safe_parse for backwards compat."""
+    return safe_parse(text)
 
 def combine_pages_to_text(pages: Union[str, List[Dict[str, Any]]]) -> str:
     """Helper to combine a list of page dicts into a single string if necessary."""
@@ -30,11 +18,15 @@ def extract_tender_criteria(pages: Union[str, List[Dict[str, Any]]], retries: in
     Extracts eligibility criteria from tender text using the LLM.
     """
     text = combine_pages_to_text(pages)
-    prompt = f"""
-Extract eligibility criteria from the following tender text.
+    prompt = f"""Extract eligibility criteria from the following tender text.
 
-Return ONLY valid JSON. Do not include explanation.
-The output MUST be a JSON array of objects, with this exact schema:
+Return ONLY valid JSON. Do NOT include:
+- explanations or commentary
+- markdown or code blocks
+- newlines inside string values
+- comments
+
+The output MUST be a JSON array of objects with this exact schema:
 [
     {{
         "criterion": "string (e.g., turnover, experience)",
@@ -44,7 +36,7 @@ The output MUST be a JSON array of objects, with this exact schema:
     }}
 ]
 
-If a value is missing, use null. 
+If a value is missing, use null.
 
 Tender text:
 {text}
