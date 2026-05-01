@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes import upload, process, extract
+from app.routes import upload, process, extract, evaluate
 
 app = FastAPI(title="Tender Evaluation System Backend")
 
@@ -7,6 +7,7 @@ app = FastAPI(title="Tender Evaluation System Backend")
 app.include_router(upload.router)
 app.include_router(process.router)
 app.include_router(extract.router)
+app.include_router(evaluate.router)
 
 @app.get("/")
 def read_root():

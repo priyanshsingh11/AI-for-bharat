@@ -62,3 +62,69 @@ def run_extraction_pipeline() -> dict:
             print(error_msg)
             
     return summary
+
+def run_evaluation_pipeline() -> dict:
+    """
+    Cross-references extracted tender criteria with extracted bidder data,
+    evaluates them, generates LLM-refined explanations, and saves to data/results/.
+    """
+    from app.services.rule_engine import evaluate_bidder
+    from app.services.explain_service import process_evaluations_with_explanations
+    
+    summary = {
+        "processed_files": [],
+        "errors": []
+    }
+    
+    RESULTS_DIR = os.path.join(PROJECT_ROOT, "data", "results")
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    
+    if not os.path.exists(EXTRACTED_DIR):
+        summary["errors"].append("Extracted directory not found.")
+        return summary
+        
+    files = [f for f in os.listdir(EXTRACTED_DIR) if f.endswith('.json')]
+    
+    # 1. Find tender criteria
+    tender_file = next((f for f in files if "tender" in f.lower()), None)
+    if not tender_file:
+        summary["errors"].append("No tender JSON found in extracted data.")
+        return summary
+        
+    with open(os.path.join(EXTRACTED_DIR, tender_file), "r", encoding="utf-8") as f:
+        tender_criteria = json.load(f)
+        
+    if not isinstance(tender_criteria, list):
+        summary["errors"].append("Tender criteria must be a JSON array.")
+        return summary
+        
+    # 2. Find and evaluate bidder data
+    bidder_files = [f for f in files if "tender" not in f.lower()]
+    
+    for bidder_file in bidder_files:
+        try:
+            with open(os.path.join(EXTRACTED_DIR, bidder_file), "r", encoding="utf-8") as f:
+                bidder_data = json.load(f)
+                
+            print(f"Evaluating {bidder_file} against tender criteria...")
+            
+            # Rule Engine Base Evaluation
+            eval_results = evaluate_bidder(tender_criteria, bidder_data)
+            
+            # Explainability Layer
+            final_output = process_evaluations_with_explanations(eval_results)
+            
+            # Save final results
+            output_path = os.path.join(RESULTS_DIR, bidder_file)
+            with open(output_path, "w", encoding="utf-8") as f:
+                json.dump(final_output, f, indent=4)
+                
+            summary["processed_files"].append(bidder_file)
+            print(f"Successfully saved evaluation for {bidder_file}")
+            
+        except Exception as e:
+            error_msg = f"Failed to evaluate {bidder_file}: {str(e)}"
+            summary["errors"].append(error_msg)
+            print(error_msg)
+            
+    return summary

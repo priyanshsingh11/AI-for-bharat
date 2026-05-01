@@ -20,6 +20,8 @@ data/processed/*
 !data/processed/.gitkeep
 data/extracted/*
 !data/extracted/.gitkeep
+data/results/*
+!data/results/.gitkeep
 
 # macOS
 .DS_Store
