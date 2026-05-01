@@ -16,31 +16,92 @@ This system automates the extraction, comparison, and evidence-gathering steps, 
 
 The pipeline is divided into five discrete, independently testable layers. Each layer produces a structured output that feeds the next. No layer has a circular dependency.
 
-```
-[Document Upload]
-        |
-        v
-[Layer 1: OCR]            -- PyMuPDF / EasyOCR
-        |
-        v  data/processed/<name>.json
-[Layer 2: LLM Extraction] -- Groq API (llama-3.3-70b-versatile)
-        |
-        v  data/extracted/<name>.json
-[Layer 3: Rule Engine]    -- Pure Python, deterministic
-        |
-        v
-[Layer 4: Evidence]       -- Value normalization + page search
-        |
-        v
-[Layer 5: Explainability] -- Rule-based text generation
-        |
-        v  data/results/<name>.json
-[Layer 6: Human Review]   -- FastAPI endpoint + Next.js UI
+```mermaid
+flowchart TD
+    subgraph CLIENT["Client Layer"]
+        UI1["Next.js Dashboard\nfrontend-next/app/page.js"]
+        UI2["Streamlit UI\nfrontend/app.py"]
+    end
+
+    subgraph API["API Layer — FastAPI app/main.py"]
+        R1["POST /upload\nupload.py"]
+        R2["POST /process\nprocess.py"]
+        R3["POST /extract\nextract.py"]
+        R4["POST /evaluate\nevaluate.py"]
+        R5["POST /review\nhuman_review.py"]
+        R6["GET /results\nresults.py"]
+    end
+
+    subgraph PIPELINE["Pipeline Orchestration — app/core/pipeline.py"]
+        P1["run_extraction_pipeline()"]
+        P2["run_evaluation_pipeline()"]
+    end
+
+    subgraph SERVICES["Service Layer"]
+        S1["ocr_service.py\nPyMuPDF + EasyOCR"]
+        S2["llm_service.py\nGroq API Client"]
+        S3["extraction_service.py\nextract_tender_criteria()\nextract_bidder_data()"]
+        S4["rule_engine.py\nevaluate_bidder()\nfind_bidder_value()"]
+        S5["explain_service.py\nextract_evidence_with_page()\ngenerate_base_explanation()"]
+        S6["formatters.py\nformat_inr()"]
+    end
+
+    subgraph STORAGE["File Storage — data/"]
+        D1["uploads/\nRaw PDF and Image files"]
+        D2["processed/\nPage-wise OCR JSON"]
+        D3["extracted/\nStructured LLM JSON"]
+        D4["results/\nFinal Evaluation JSON"]
+    end
+
+    subgraph EXTERNAL["External Services"]
+        EX1["Groq Cloud API\nllama-3.3-70b-versatile\ntemperature=0.0"]
+    end
+
+    UI1 -->|"multipart/form-data"| R1
+    UI2 -->|"multipart/form-data"| R1
+    UI1 -->|HTTP POST| R2
+    UI1 -->|HTTP POST| R3
+    UI1 -->|HTTP POST| R4
+    UI1 -->|HTTP POST| R5
+    UI1 -->|HTTP GET| R6
+
+    R1 --> D1
+    R2 --> P1
+    R3 --> P1
+    R4 --> P2
+    R5 --> D4
+    R6 --> D4
+
+    P1 -->|"reads"| D1
+    P1 --> S1
+    S1 -->|"page-wise JSON"| D2
+    P1 -->|"reads"| D2
+    P1 --> S3
+    S3 --> S2
+    S2 -->|"prompt + response"| EX1
+    S3 -->|"structured JSON"| D3
+
+    P2 -->|"reads"| D3
+    P2 -->|"reads pages for evidence"| D2
+    P2 --> S4
+    P2 --> S5
+    S5 --> S6
+    S4 -->|"pass/fail/review"| P2
+    S5 -->|"evidence + reason"| P2
+    P2 -->|"final result JSON"| D4
 ```
 
-### Why Each Layer Is Separate
+### Layer Responsibilities
 
-The critical design principle is that the LLM is used only where unstructured text must become structured data. All decisions — pass, fail, review — are made by code with deterministic operators. Evidence is found by string search, not by asking the LLM. This makes every decision traceable to a specific line of code, not a neural network inference.
+| Layer | Files | Responsibility |
+|-------|-------|----------------|
+| Client | `frontend-next/`, `frontend/` | File upload, pipeline trigger, result display, human review |
+| API | `app/routes/` | HTTP routing, request validation via Pydantic, response formatting |
+| Pipeline | `app/core/pipeline.py` | Orchestrates service calls, reads/writes files, computes summary fields |
+| Services | `app/services/` | Isolated business logic: OCR, LLM calls, rule evaluation, evidence search |
+| Storage | `data/` | File-based persistence; one JSON file per document per stage |
+| External | Groq API | LLM inference; used only in the extraction stage |
+
 
 ---
 
