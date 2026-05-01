@@ -1,5 +1,5 @@
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Union
 from app.services.llm_service import call_llm
 
 def safe_json_loads(text: str) -> Any:
@@ -13,10 +13,17 @@ def safe_json_loads(text: str) -> Any:
         text = text[:-3]
     return json.loads(text.strip())
 
-def extract_tender_criteria(text: str, retries: int = 1) -> List[Dict[str, Any]]:
+def combine_pages_to_text(pages: Union[str, List[Dict[str, Any]]]) -> str:
+    """Helper to combine a list of page dicts into a single string if necessary."""
+    if isinstance(pages, list):
+        return " ".join([str(p.get("text", "")) for p in pages])
+    return pages
+
+def extract_tender_criteria(pages: Union[str, List[Dict[str, Any]]], retries: int = 1) -> List[Dict[str, Any]]:
     """
     Extracts eligibility criteria from tender text using the LLM.
     """
+    text = combine_pages_to_text(pages)
     prompt = f"""
 Extract eligibility criteria from the following tender text.
 
@@ -62,10 +69,11 @@ Tender text:
     
     return []
 
-def extract_bidder_data(text: str, retries: int = 1) -> Dict[str, Any]:
+def extract_bidder_data(pages: Union[str, List[Dict[str, Any]]], retries: int = 1) -> Dict[str, Any]:
     """
     Extracts bidder information from bidder text using the LLM.
     """
+    text = combine_pages_to_text(pages)
     prompt = f"""
 Extract bidder information from the following text.
 

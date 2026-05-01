@@ -111,13 +111,20 @@ def run_evaluation_pipeline() -> dict:
             with open(os.path.join(EXTRACTED_DIR, bidder_file), "r", encoding="utf-8") as f:
                 bidder_data = json.load(f)
                 
+            # Load the original processed pages for evidence extraction
+            pages_data = []
+            processed_file_path = os.path.join(PROCESSED_DIR, bidder_file)
+            if os.path.exists(processed_file_path):
+                with open(processed_file_path, "r", encoding="utf-8") as f:
+                    pages_data = json.load(f)
+                
             print(f"Evaluating {bidder_file} against tender criteria...")
             
             # Rule Engine Base Evaluation
             eval_results = evaluate_bidder(tender_criteria, bidder_data)
             
-            # Explainability Layer
-            final_output = process_evaluations_with_explanations(eval_results)
+            # Explainability Layer with Evidence Extraction
+            final_output = process_evaluations_with_explanations(eval_results, pages=pages_data)
             
             # Save final results
             output_path = os.path.join(RESULTS_DIR, bidder_file)
