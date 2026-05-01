@@ -18,7 +18,7 @@ function StatusBadge({ result }) {
 
 function FinalStatusPill({ status }) {
   const map = {
-    'Eligible':     ['pill-eligible',     'ELIGIBLE'],
+    'Eligible': ['pill-eligible', 'ELIGIBLE'],
     'Not Eligible': ['pill-not-eligible', 'NOT ELIGIBLE'],
     'Needs Review': ['pill-needs-review', 'NEEDS REVIEW'],
   };
@@ -97,7 +97,7 @@ function BidderCard({ data, filename, onReview }) {
         <div className="evidence-section">
           <div className="evidence-label">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
             Verified Evidence Snippets
           </div>
@@ -123,15 +123,15 @@ function BidderCard({ data, filename, onReview }) {
       <div className="review-footer">
         <div className="review-hint">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
           </svg>
           Pending final human determination
         </div>
         <div className="review-actions">
           <button className="btn btn-approve" onClick={() => onReview(filename, 'Eligible')}>Approve</button>
-          <button className="btn btn-reject"  onClick={() => onReview(filename, 'Not Eligible')}>Mark Not Eligible</button>
-          <button className="btn btn-review"  onClick={() => onReview(filename, 'Needs Review')}>Needs Review</button>
+          <button className="btn btn-reject" onClick={() => onReview(filename, 'Not Eligible')}>Mark Not Eligible</button>
+          <button className="btn btn-review" onClick={() => onReview(filename, 'Needs Review')}>Needs Review</button>
         </div>
       </div>
     </div>
@@ -149,10 +149,10 @@ function Sidebar() {
       <nav className="sidebar-nav">
         <div className="nav-item active">
           <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="3" width="7" height="7"/>
-            <rect x="14" y="3" width="7" height="7"/>
-            <rect x="14" y="14" width="7" height="7"/>
-            <rect x="3" y="14" width="7" height="7"/>
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
           </svg>
           Dashboard
         </div>
@@ -163,12 +163,12 @@ function Sidebar() {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function HomePage() {
-  const [tenderFile, setTenderFile]   = useState(null);
+  const [tenderFile, setTenderFile] = useState(null);
   const [bidderFiles, setBidderFiles] = useState([]);
-  const [running, setRunning]         = useState(false);
-  const [statusMsgs, setStatusMsgs]   = useState([]);
-  const [results, setResults]         = useState([]);
-  const [dragOver, setDragOver]       = useState(false);
+  const [running, setRunning] = useState(false);
+  const [statusMsgs, setStatusMsgs] = useState([]);
+  const [results, setResults] = useState([]);
+  const [dragOver, setDragOver] = useState(false);
 
   const addStatus = (msg, type = 'info') =>
     setStatusMsgs(prev => [...prev, { msg, type }]);
@@ -191,8 +191,8 @@ export default function HomePage() {
   };
 
   const runPipeline = async () => {
-    if (!tenderFile)           { addStatus('Upload a tender document first.', 'error'); return; }
-    if (!bidderFiles.length)   { addStatus('Upload at least one bidder document.', 'error'); return; }
+    if (!tenderFile) { addStatus('Upload a tender document first.', 'error'); return; }
+    if (!bidderFiles.length) { addStatus('Upload at least one bidder document.', 'error'); return; }
 
     setRunning(true);
     setStatusMsgs([]);
@@ -284,9 +284,9 @@ export default function HomePage() {
                     onChange={e => { if (e.target.files[0]) setTenderFile(e.target.files[0]); }} />
                   <div className="upload-icon">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" opacity="0.4">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                      <polyline points="17 8 12 3 7 8"/>
-                      <line x1="12" y1="3" x2="12" y2="15"/>
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="17 8 12 3 7 8" />
+                      <line x1="12" y1="3" x2="12" y2="15" />
                     </svg>
                   </div>
                   <p>Drag and drop tender RFP or <a>browse files</a></p>
@@ -295,8 +295,8 @@ export default function HomePage() {
                 <div className="file-item">
                   <div className="file-item-name">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.6">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/>
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <polyline points="14 2 14 8 20 8" />
                     </svg>
                     <span>{tenderFile.name}</span>
                   </div>
@@ -316,8 +316,8 @@ export default function HomePage() {
                   <div key={i} className="file-item">
                     <div className="file-item-name">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.6">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                        <polyline points="14 2 14 8 20 8"/>
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
                       </svg>
                       <span>{f.name}</span>
                     </div>
@@ -342,14 +342,13 @@ export default function HomePage() {
               {running
                 ? <><span className="spinner" /> Running Evaluation...</>
                 : <>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                    </svg>
-                    Run Evaluation
-                  </>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                  Run Evaluation
+                </>
               }
             </button>
-            <div className="run-hint">Estimated completion: ~45 seconds depending on document size</div>
           </div>
 
           {/* Status Messages */}
