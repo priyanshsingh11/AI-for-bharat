@@ -28,7 +28,6 @@ def call_llm(prompt: str) -> str:
             ],
             model="llama-3.3-70b-versatile",
             temperature=0.0,  # Deterministic response
-            response_format={"type": "json_object"}
         )
         return response.choices[0].message.content.strip()
     except Exception as e:

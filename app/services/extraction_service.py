@@ -1,17 +1,23 @@
 import json
+import re
 from typing import Dict, Any, List, Union
 from app.services.llm_service import call_llm
 
 def safe_json_loads(text: str) -> Any:
-    """Helper to safely parse JSON and remove any markdown code block artifacts if the LLM leaked them."""
+    """Helper to safely parse JSON, stripping markdown artifacts and control characters."""
     text = text.strip()
+    # Strip markdown code block wrappers if the LLM leaked them
     if text.startswith("```json"):
         text = text[7:]
     if text.startswith("```"):
         text = text[3:]
     if text.endswith("```"):
         text = text[:-3]
-    return json.loads(text.strip())
+    text = text.strip()
+    # Strip illegal control characters (0x00–0x08, 0x0B, 0x0C, 0x0E–0x1F, 0x7F)
+    # Preserve normal whitespace: 0x09=tab, 0x0A=newline, 0x0D=carriage return
+    text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', text)
+    return json.loads(text)
 
 def combine_pages_to_text(pages: Union[str, List[Dict[str, Any]]]) -> str:
     """Helper to combine a list of page dicts into a single string if necessary."""
@@ -60,6 +66,21 @@ Tender text:
                         "mandatory": item.get("mandatory")
                     })
                 return normalized_list
+            elif isinstance(data, dict):
+                # LLM may wrap the array in a dict e.g. {"criteria": [...]}
+                # Find the first list value in the dict
+                for v in data.values():
+                    if isinstance(v, list):
+                        normalized_list = []
+                        for item in v:
+                            normalized_list.append({
+                                "criterion": item.get("criterion"),
+                                "operator": item.get("operator"),
+                                "value": item.get("value"),
+                                "mandatory": item.get("mandatory")
+                            })
+                        return normalized_list
+                raise ValueError("Expected a JSON array or a dict containing a list")
             else:
                 raise ValueError("Expected a JSON array")
         except (json.JSONDecodeError, ValueError) as e:
