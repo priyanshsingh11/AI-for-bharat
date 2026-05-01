@@ -148,6 +148,36 @@ AI-for-bharat/
 
 ## Technology Stack
 
+The system is built using a modern, high-performance stack focused on speed, auditability, and ease of use.
+
+### Backend
+- Python: The primary programming language for all backend services and the evaluation engine.
+- FastAPI: High-performance web framework used to expose the evaluation pipeline as a REST API. It handles request validation, async processing, and automatic documentation.
+- Uvicorn: The ASGI server implementation used to serve the FastAPI application.
+- Pydantic: Used for rigorous data validation and type safety, particularly for handling human review status updates.
+- Python-dotenv: Manages environment variables like the Groq API key securely.
+
+### Artificial Intelligence and LLM
+- Groq Cloud API: Provides high-speed inference for Large Language Models.
+- llama-3.3-70b-versatile: The specific model used for structured extraction from unstructured procurement documents.
+- Custom LLM Service: A dedicated layer in the backend that handles prompt engineering, response sanitization, and defensive JSON parsing to ensure reliability.
+
+### Document Processing and OCR
+- PyMuPDF (fitz): Used for extremely fast and accurate text extraction from PDF documents while preserving page-level structure.
+- EasyOCR: A deep learning-based OCR engine used to handle image-based submissions (PNG, JPG, JPEG).
+- Pillow (PIL): Handles image pre-processing before OCR.
+
+### Frontend
+- Next.js 15 (App Router): The main user interface, providing a fast, responsive dashboard with server-side rendering benefits.
+- JavaScript: Used for all frontend interactivity and state management.
+- Streamlit: An alternative, Python-only frontend used during the early stages of development and for internal debugging.
+- Vanilla CSS: The styling methodology used for the Next.js frontend, utilizing CSS variables for a custom dark-mode theme without external dependencies.
+- Roboto Mono: The chosen typeface for the entire application, providing a technical, high-precision aesthetic.
+
+### Communication and Storage
+- Requests: Used for communication between the frontend and backend layers.
+- File-based JSON Storage: The system uses a structured directory-based storage for document persistence across pipeline stages, ensuring a clear audit trail.
+
 ### FastAPI
 
 Used as the backend web framework. Chosen for automatic OpenAPI docs generation, native async support, and Pydantic-based request validation. Every endpoint returns structured JSON. CORS middleware is configured to allow requests from the Next.js dev server on both port 3000 and 3001.
