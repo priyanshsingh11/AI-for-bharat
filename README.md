@@ -57,7 +57,7 @@ The server will start at `http://127.0.0.1:8000`.
 - **Response**: `{"message": "Backend is running"}`
 
 ### 2. File Upload API
-- **URL**: `/api/upload`
+- **URL**: `/upload`
 - **Method**: `POST`
 - **Content-Type**: `multipart/form-data`
 - **Description**: Accepts one tender file and multiple bidder files. Validates for allowed formats (PDF, PNG, JPG, JPEG) and saves them locally.
@@ -72,6 +72,25 @@ The server will start at `http://127.0.0.1:8000`.
       "bidder_file_paths": [
           "data/uploads/bidder1.pdf",
           "data/uploads/bidder2.png"
+      ]
+  }
+  ```
+
+### 3. Document Processing API
+- **URL**: `/process`
+- **Method**: `POST`
+- **Description**: Reads all files in the `data/uploads/` directory, extracts their text using PyMuPDF (for PDFs) and EasyOCR (for images), and saves the extracted text to `data/processed/` as `.txt` files.
+- **Success Response**:
+  ```json
+  {
+      "message": "Processing completed.",
+      "processed_files": [
+          "tender.pdf",
+          "bidder1.png"
+      ],
+      "output_paths": [
+          "data/processed/tender.txt",
+          "data/processed/bidder1.txt"
       ]
   }
   ```
