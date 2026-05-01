@@ -1,3 +1,7 @@
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-operational-success)
+
 # AI-Based Tender Evaluation System
 
 A production-grade, end-to-end pipeline for automated government tender bid evaluation. The system ingests unstructured procurement documents, extracts structured eligibility criteria and bidder data using a large language model, evaluates compliance using a deterministic rule engine, locates evidence with exact page citations, and surfaces results to a human reviewer for final decision.
@@ -151,11 +155,15 @@ AI-for-bharat/
 The system is built using a modern, high-performance stack focused on speed, auditability, and ease of use.
 
 **Key Technologies:**
-- **Backend:** Python, FastAPI, Uvicorn, Pydantic, python-dotenv
-- **OCR:** PyMuPDF (fitz), EasyOCR, Pillow
-- **AI/LLM:** Groq API (llama-3.3-70b-versatile)
-- **Frontend:** Next.js 15 (App Router), JavaScript, Vanilla CSS, Streamlit
-- **Utilities:** Requests, Regex, JSON
+
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
+![Groq](https://img.shields.io/badge/Groq-f59e0b?style=for-the-badge)
+![PyMuPDF](https://img.shields.io/badge/PyMuPDF-blue?style=for-the-badge)
+![Pydantic](https://img.shields.io/badge/Pydantic-e92063?style=for-the-badge&logo=pydantic&logoColor=white)
 
 ### Backend
 - Python: The primary programming language for all backend services and the evaluation engine.
