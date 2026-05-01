@@ -10,7 +10,7 @@ os.makedirs(EXTRACTED_DIR, exist_ok=True)
 
 def run_extraction_pipeline() -> dict:
     """
-    Iterates through all .txt files in data/processed/, calls appropriate
+    Iterates through all .json files in data/processed/, calls appropriate
     extraction method based on filename, and saves output to data/extracted/.
     """
     summary = {
@@ -22,16 +22,21 @@ def run_extraction_pipeline() -> dict:
         summary["errors"].append("Processed directory not found.")
         return summary
         
-    files = [f for f in os.listdir(PROCESSED_DIR) if f.endswith('.txt')]
+    files = [f for f in os.listdir(PROCESSED_DIR) if f.endswith('.json')]
     
     for filename in files:
         file_path = os.path.join(PROCESSED_DIR, filename)
-        output_filename = filename.replace('.txt', '.json')
+        output_filename = filename
         output_path = os.path.join(EXTRACTED_DIR, output_filename)
         
         try:
             with open(file_path, "r", encoding="utf-8") as f:
-                text_content = f.read()
+                pages_data = json.load(f)
+                
+            # Convert JSON array of pages to a single string for LLM extraction context
+            text_content = ""
+            for page_data in pages_data:
+                text_content += f"Page {page_data.get('page', 'Unknown')}:\n{page_data.get('text', '')}\n\n"
                 
             # Truncate text to avoid sending excessively large context to the LLM (e.g. max 15000 chars)
             max_chars = 15000

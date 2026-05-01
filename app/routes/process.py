@@ -39,18 +39,20 @@ async def process_documents():
                 
             try:
                 # Extract text
-                extracted_text = extract_text(file_path)
+                extracted_data = extract_text(file_path)
                 
-                # Save to processed dir
+                # Save to processed dir as JSON
                 base_name = filename.rsplit('.', 1)[0]
-                output_filename = f"{base_name}.txt"
+                output_filename = f"{base_name}.json"
                 output_path = os.path.join(PROCESSED_DIR, output_filename)
                 
+                import json
                 with open(output_path, "w", encoding="utf-8") as f:
-                    f.write(extracted_text)
+                    json.dump(extracted_data, f, indent=4)
                     
                 processed_files.append(filename)
                 output_paths.append(f"data/processed/{output_filename}")
+                print(f"Extracted {len(extracted_data)} pages from {filename}")
                 
             except ValueError as ve:
                 # Log unsupported types but continue processing
