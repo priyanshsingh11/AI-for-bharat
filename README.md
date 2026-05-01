@@ -39,6 +39,14 @@ If you need to re-install or update packages in the future, run:
 pip install -r requirements.txt
 ```
 
+### 3. Set Environment Variables
+The extraction pipeline uses Groq's LLM API. You must set your API key before running the server.
+
+**For PowerShell (Windows):**
+```powershell
+$env:GROQ_API_KEY="your_groq_api_key_here"
+```
+
 ## Running the Server
 
 Start the development server using `uvicorn`:
