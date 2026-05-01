@@ -6,3 +6,5 @@ easyocr
 pillow
 groq
 python-dotenv
+streamlit
+requests
