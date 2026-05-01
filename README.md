@@ -14,7 +14,8 @@ A clean, modular, and production-ready backend built with FastAPI. This backend 
 │   ├── main.py            # FastAPI application entry point
 │   └── __init__.py
 ├── data/
-│   ├── processed/         # Directory for processed AI outputs
+│   ├── extracted/         # Directory for structured JSON extracted data
+│   ├── processed/         # Directory for processed AI outputs (e.g. OCR text)
 │   └── uploads/           # Directory for raw uploaded files
 ├── venv/                  # Isolated Python virtual environment
 ├── .gitignore             # Standard Python gitignore rules
@@ -92,6 +93,24 @@ The server will start at `http://127.0.0.1:8000`.
           "data/processed/tender.txt",
           "data/processed/bidder1.txt"
       ]
+  }
+  ```
+
+### 4. Extraction API
+- **URL**: `/extract`
+- **Method**: `POST`
+- **Description**: Triggers the LLM extraction pipeline. It reads the `.txt` files in `data/processed/`, identifies whether each is a tender or a bidder document based on its filename, and extracts the structured JSON. The outputs are saved as `.json` files in `data/extracted/`.
+- **Success Response**:
+  ```json
+  {
+      "message": "Extraction pipeline completed.",
+      "summary": {
+          "processed_files": [
+              "tender.json",
+              "bidder1.json"
+          ],
+          "errors": []
+      }
   }
   ```
 
