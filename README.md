@@ -150,6 +150,13 @@ AI-for-bharat/
 
 The system is built using a modern, high-performance stack focused on speed, auditability, and ease of use.
 
+**Key Technologies:**
+- **Backend:** Python, FastAPI, Uvicorn, Pydantic, python-dotenv
+- **OCR:** PyMuPDF (fitz), EasyOCR, Pillow
+- **AI/LLM:** Groq API (llama-3.3-70b-versatile)
+- **Frontend:** Next.js 15 (App Router), JavaScript, Vanilla CSS, Streamlit
+- **Utilities:** Requests, Regex, JSON
+
 ### Backend
 - Python: The primary programming language for all backend services and the evaluation engine.
 - FastAPI: High-performance web framework used to expose the evaluation pipeline as a REST API. It handles request validation, async processing, and automatic documentation.
