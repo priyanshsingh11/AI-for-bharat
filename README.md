@@ -2,11 +2,6 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-operational-success)
 
- _   ___    _____ ___ _  _ ___  ___ ___    _____   _____ _____ ___ __  __ 
-  /_\ |_ _|  |_   _| __| \| |   \| __| _ \  / __\ \ / / __|_   _| __|  \/  |
- / _ \ | |    | | | _|| .` | |) | _||   /  \__ \\ V /\__ \ | | | _|| |\/| |
-/_/ \_\___|   |_| |___|_|\_|___/|___|_|_\  |___/ |_| |___/ |_| |___|_|  |_|
-
 # AI-Based Tender Evaluation System
 
 A production-grade, end-to-end pipeline for automated government tender bid evaluation. The system ingests unstructured procurement documents, extracts structured eligibility criteria and bidder data using a large language model, evaluates compliance using a deterministic rule engine, locates evidence with exact page citations, and surfaces results to a human reviewer for final decision.
