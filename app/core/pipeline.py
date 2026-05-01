@@ -128,19 +128,28 @@ def run_evaluation_pipeline() -> dict:
             
             # Compute AI Status
             ai_status = "Eligible"
+            passed = sum(1 for e in evaluations_list if e.get("result") == "pass")
+            failed = sum(1 for e in evaluations_list if e.get("result") == "fail")
+            review = sum(1 for e in evaluations_list if e.get("result") == "review")
+            total = len(evaluations_list)
             for ev in evaluations_list:
                 if ev.get("result") == "fail":
                     ai_status = "Not Eligible"
                     break
                 elif ev.get("result") == "review":
                     ai_status = "Needs Review"
-            
+
             final_output = {
                 "ai_status": ai_status,
                 "human_status": None,
                 "final_status": ai_status,
                 "reviewed": False,
                 "review_timestamp": None,
+                "summary": f"{passed}/{total} criteria passed",
+                "passed": passed,
+                "failed": failed,
+                "needs_review": review,
+                "total": total,
                 "evaluations": evaluations_list
             }
             
