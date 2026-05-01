@@ -26,7 +26,7 @@ def call_llm(prompt: str) -> str:
                     "content": prompt
                 }
             ],
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             temperature=0.0,  # Deterministic response
             response_format={"type": "json_object"}
         )
