@@ -15,7 +15,6 @@ A **production-ready, end-to-end AI pipeline** for automated government tender b
 | 📄 **Evidence Extraction** | Page-level evidence snippets with value variant normalization (e.g. `₹3 Cr`) |
 | 🗣️ **Explainability Layer** | Professional, human-readable explanations for every criterion decision |
 | 🧑‍⚖️ **Human-in-the-Loop Review** | API + UI to override AI decisions with full audit timestamping |
-| 📊 **Confidence Scoring** | Heuristic confidence per criterion based on evidence availability |
 | 🖥️ **Streamlit Dashboard** | Interactive frontend with color-coded results and one-click review |
 
 ---

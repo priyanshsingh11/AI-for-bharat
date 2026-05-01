@@ -126,6 +126,7 @@ if os.path.exists(RESULTS_DIR):
             c3.metric("🎯 Final Status", final_status)
             c4.metric("📊 Criteria", f"{passed}/{total} passed")
 
+
             # ── Criteria table with color rows ────────────────────
             if evaluations:
                 st.markdown("#### Criteria Breakdown")
@@ -162,6 +163,7 @@ if os.path.exists(RESULTS_DIR):
                         st.markdown(f"- {icon} **{crit}** — Found on **Page {page}**: *\"{evidence}\"*")
                     else:
                         st.markdown(f"- {icon} **{crit}** — *{evidence}*")
+
 
             # ── Human review buttons ────────────────────────────────
             st.markdown("#### 🧑‍⚖️ Human Review")

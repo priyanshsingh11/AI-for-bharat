@@ -36,18 +36,6 @@ def generate_base_explanation(eval_result: Dict[str, Any]) -> str:
     else:
         return f"{criterion} requires manual review (Required: {fmt_required}, Found: {fmt_found})."
 
-def compute_confidence(eval_result: Dict[str, Any], evidence_page) -> float:
-    """
-    Heuristic confidence score based on result certainty and evidence availability.
-    """
-    result = eval_result.get("result", "review")
-    if result == "pass":
-        return 0.95 if evidence_page else 0.78
-    elif result == "fail":
-        found = eval_result.get("found")
-        return 0.92 if found is None else 0.88
-    return 0.55  # review
-
 def generate_value_variants(value: Any) -> List[str]:
     """Generates variants of a numeric value for more robust string matching."""
     variants = []
@@ -129,7 +117,6 @@ def process_evaluations_with_explanations(evaluations: List[Dict[str, Any]], pag
 
         evidence_data = extract_evidence_with_page(pages, found_val, criterion)
         page_num = evidence_data.get("page")
-        confidence = compute_confidence(ev, page_num)
 
         source = f"Page {page_num} - Extracted from document" if page_num else "Evidence not found"
 
@@ -147,8 +134,7 @@ def process_evaluations_with_explanations(evaluations: List[Dict[str, Any]], pag
             "reason": reason,
             "evidence": evidence_data.get("snippet"),
             "page": page_num,
-            "source": source,
-            "confidence": round(confidence, 2)
+            "source": source
         })
 
     return final_outputs
