@@ -5,3 +5,4 @@ pymupdf
 easyocr
 pillow
 groq
+python-dotenv

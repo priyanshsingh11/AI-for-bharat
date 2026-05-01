@@ -1,5 +1,9 @@
 import os
+from dotenv import load_dotenv
 from groq import Groq
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize the Groq client
 # This expects the GROQ_API_KEY environment variable to be set.
