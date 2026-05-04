@@ -15,7 +15,7 @@ services:
   - type: web
     name: trustgraph-frontend
     runtime: node
-    rootDirectory: frontend2
+    rootDir: frontend2
     buildCommand: npm install && npm run build
     startCommand: npm run start
     envVars:
