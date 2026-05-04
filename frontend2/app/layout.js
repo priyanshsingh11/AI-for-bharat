@@ -9,8 +9,8 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata = {
-  title: 'AI Tender Evaluation System',
-  description: 'Automated eligibility analysis with explainable AI engine',
+  title: 'TrustGraph AI | Intelligent Procurement',
+  description: 'Automated eligibility analysis and tender compliance with explainable AI',
 };
 
 export default function RootLayout({ children }) {

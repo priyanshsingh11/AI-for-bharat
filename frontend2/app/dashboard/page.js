@@ -26,6 +26,7 @@ function FinalStatusPill({ status }) {
   return <span className={`final-status-pill ${cls}`}>{label}</span>;
 }
 
+// ─── Bidder Result Card ──────────────────────────────────────────────────────
 function BidderCard({ data, filename, onReview }) {
   const ev = data.evaluations || [];
   const passed = data.passed ?? ev.filter(e => e.result === 'pass').length;
@@ -35,6 +36,7 @@ function BidderCard({ data, filename, onReview }) {
 
   return (
     <div className="bidder-card">
+      {/* Header */}
       <div className="bidder-card-header">
         <div>
           <div className="bidder-name">{filename.replace('.json', '')}</div>
@@ -46,6 +48,7 @@ function BidderCard({ data, filename, onReview }) {
         </div>
       </div>
 
+      {/* Summary bar */}
       <div className="summary-bar">
         <div className="summary-item">
           <span className="summary-label">AI Status</span>
@@ -63,6 +66,7 @@ function BidderCard({ data, filename, onReview }) {
         </div>
       </div>
 
+      {/* Criteria Table */}
       {ev.length > 0 && (
         <table className="criteria-table">
           <thead>
@@ -88,6 +92,7 @@ function BidderCard({ data, filename, onReview }) {
         </table>
       )}
 
+      {/* Evidence */}
       {ev.some(e => e.evidence) && (
         <div className="evidence-section">
           <div className="evidence-label">
@@ -114,6 +119,7 @@ function BidderCard({ data, filename, onReview }) {
         </div>
       )}
 
+      {/* Human Review */}
       <div className="review-footer">
         <div className="review-hint">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -132,7 +138,31 @@ function BidderCard({ data, filename, onReview }) {
   );
 }
 
-export default function CombinedPage() {
+// ─── Sidebar ─────────────────────────────────────────────────────────────────
+function Sidebar() {
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-logo">
+        <h2>Tender AI</h2>
+        <div><span>Precision Evaluation Engine</span></div>
+      </div>
+      <nav className="sidebar-nav">
+        <div className="nav-item active">
+          <svg className="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </div>
+      </nav>
+    </aside>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
+export default function HomePage() {
   const [tenderFile, setTenderFile] = useState(null);
   const [bidderFiles, setBidderFiles] = useState([]);
   const [running, setRunning] = useState(false);
@@ -218,51 +248,29 @@ export default function CombinedPage() {
     }
   };
 
-  const scrollToApp = () => {
-    document.getElementById('app-section').scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <div className="landing-page">
-      <nav className="landing-nav">
-        <div className="landing-logo">TrustGraph AI</div>
-        <div className="landing-nav-links">
-          <button onClick={scrollToApp} className="btn-primary">Launch App</button>
+    <div className="layout">
+      <Sidebar />
+      <div className="main">
+        {/* Topbar */}
+        <div className="topbar">
+          <span className="topbar-title">Dashboard</span>
+          <div className="system-badge">
+            <span className="system-dot" />
+            SYSTEM: OPERATIONAL
+          </div>
         </div>
-      </nav>
 
-      {/* Hero Section */}
-      <main className="hero" style={{ minHeight: '100vh' }}>
-        <div className="hero-glow" />
-        <span className="section-tag">Next-Gen Evaluation</span>
-        <h1>Revolutionizing Tender Compliance with Explainable AI</h1>
-        <p>
-          Automate the tedious process of bidder evaluation with our precision engine. 
-          Upload documents, extract critical data, and get instant, verifiable eligibility reports.
-        </p>
-        <div className="hero-btns" style={{ marginBottom: '60px' }}>
-          <button onClick={scrollToApp} className="btn-primary">Get Started Now</button>
-        </div>
-        <div className="hero-image-container" style={{ animation: 'slideUp 0.8s ease-out 0.3s backwards', maxWidth: '800px' }}>
-           <img src="/hero.png" alt="TrustGraph AI Evaluation" style={{ maxWidth: '100%', borderRadius: '20px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', border: '1px solid var(--border-bright)' }} />
-        </div>
-        <div className="scroll-hint" style={{ marginTop: '40px', animation: 'bounce 2s infinite' }}>
-           <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ opacity: 0.5 }}>
-              <path d="M7 13l5 5 5-5M7 6l5 5 5-5" />
-           </svg>
-        </div>
-      </main>
-
-      {/* App Section */}
-      <section id="app-section" className="main" style={{ background: 'var(--bg-primary)', padding: '80px 0' }}>
-        <div className="content" style={{ margin: '0 auto', maxWidth: '1100px' }}>
-          <div className="page-header" style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span className="section-tag">Dashboard</span>
-            <h1 style={{ fontSize: '40px' }}>TrustGraph AI System</h1>
+        <div className="content">
+          {/* Header */}
+          <div className="page-header">
+            <h1>AI Tender Evaluation System</h1>
             <p>Automated eligibility analysis with explainable AI engine.</p>
           </div>
 
+          {/* Upload Grid */}
           <div className="upload-grid">
+            {/* Tender */}
             <div className="upload-card">
               <div className="upload-card-label">Tender Document</div>
               {!tenderFile ? (
@@ -300,6 +308,7 @@ export default function CombinedPage() {
               )}
             </div>
 
+            {/* Bidders */}
             <div className="upload-card">
               <div className="upload-card-label">Bidder Documents</div>
               <div className="file-list">
@@ -327,6 +336,7 @@ export default function CombinedPage() {
             </div>
           </div>
 
+          {/* Run Button */}
           <div className="run-section">
             <button className="run-btn" onClick={runPipeline} disabled={running}>
               {running
@@ -341,6 +351,7 @@ export default function CombinedPage() {
             </button>
           </div>
 
+          {/* Status Messages */}
           {statusMsgs.length > 0 && (
             <div style={{ marginBottom: 24 }}>
               {statusMsgs.map((s, i) => (
@@ -351,6 +362,7 @@ export default function CombinedPage() {
             </div>
           )}
 
+          {/* Results */}
           {results.length > 0 && (
             <>
               <div className="report-header">
@@ -362,19 +374,7 @@ export default function CombinedPage() {
             </>
           )}
         </div>
-      </section>
-
-      <footer className="landing-footer" style={{ background: 'var(--bg-secondary)' }}>
-        <p>&copy; 2026 TrustGraph AI Engine. Empowering Bharat with Intelligent Procurement.</p>
-      </footer>
-
-      <style jsx global>{`
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-          40% {transform: translateY(-10px);}
-          60% {transform: translateY(-5px);}
-        }
-      `}</style>
+      </div>
     </div>
   );
 }
