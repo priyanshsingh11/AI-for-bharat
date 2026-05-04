@@ -12,13 +12,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include the routers
-app.include_router(upload.router)
-app.include_router(process.router)
-app.include_router(extract.router)
-app.include_router(evaluate.router)
-app.include_router(human_review.router)
-app.include_router(results.router)
+# Include the routers with an /api prefix
+app.include_router(upload.router, prefix="/api")
+app.include_router(process.router, prefix="/api")
+app.include_router(extract.router, prefix="/api")
+app.include_router(evaluate.router, prefix="/api")
+app.include_router(human_review.router, prefix="/api")
+app.include_router(results.router, prefix="/api")
 
 @app.get("/")
 def read_root():

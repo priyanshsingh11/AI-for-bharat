@@ -2,7 +2,12 @@
 
 import { useState } from 'react';
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const getApiUrl = () => {
+  let url = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+  if (url.endsWith('/')) url = url.slice(0, -1);
+  return `${url}/api`;
+};
+const API = getApiUrl();
 
 function formatBytes(bytes) {
   if (!bytes) return '';
