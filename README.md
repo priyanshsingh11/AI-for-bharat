@@ -5,7 +5,9 @@
 
 # TrustGraph AI: Unified Intelligence for Procurement Compliance
 
-TrustGraph AI is a state-of-the-art, high-precision intelligence pipeline designed to automate the evaluation of bidder compliance in government and corporate procurement. By transforming unstructured, complex documents into verifiable trust graphs, the system ensures that every eligibility decision is backed by auditable evidence and deterministic logic.
+**Live Demo:** [https://trustgraph-frontend.onrender.com/](https://trustgraph-frontend.onrender.com/)
+
+TrustGraph AI is a precision evaluation engine that automates government and corporate tender compliance. By leveraging LLMs (Groq) and explainable AI, it transforms complex documents into structured compliance reports with 100% auditable evidence snippets and page-level citations.
 
 ---
 
