@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import upload, process, extract, evaluate, human_review, results
 
-app = FastAPI(title="Tender Evaluation System Backend")
+app = FastAPI(title="TrustGraph AI Backend")
 
 # Allow requests from the Next.js dev server
 app.add_middleware(
