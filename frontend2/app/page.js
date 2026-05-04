@@ -240,10 +240,7 @@ export default function CombinedPage() {
           Automate the tedious process of bidder evaluation with our precision engine. 
           Upload documents, extract critical data, and get instant, verifiable eligibility reports.
         </p>
-        <div className="hero-btns" style={{ marginBottom: '60px' }}>
-          <button onClick={scrollToApp} className="btn-primary">Get Started Now</button>
-        </div>
-        <div className="hero-image-container" style={{ animation: 'slideUp 0.8s ease-out 0.3s backwards', maxWidth: '800px' }}>
+        <div className="hero-image-container" style={{ animation: 'slideUp 0.8s ease-out 0.3s backwards', maxWidth: '800px', marginTop: '40px' }}>
            <img src="/hero.png" alt="TrustGraph AI Evaluation" style={{ maxWidth: '100%', borderRadius: '20px', boxShadow: '0 20px 50px rgba(0,0,0,0.5)', border: '1px solid var(--border-bright)' }} />
         </div>
         <div className="scroll-hint" style={{ marginTop: '40px', animation: 'bounce 2s infinite' }}>
