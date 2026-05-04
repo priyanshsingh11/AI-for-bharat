@@ -226,9 +226,6 @@ export default function CombinedPage() {
     <div className="landing-page">
       <nav className="landing-nav">
         <div className="landing-logo">TrustGraph AI</div>
-        <div className="landing-nav-links">
-          <button onClick={scrollToApp} className="btn-primary">Launch App</button>
-        </div>
       </nav>
 
       {/* Hero Section */}
