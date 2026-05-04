@@ -218,9 +218,7 @@ export default function CombinedPage() {
     }
   };
 
-  const scrollToApp = () => {
-    document.getElementById('app-section').scrollIntoView({ behavior: 'smooth' });
-  };
+
 
   return (
     <div className="landing-page">
